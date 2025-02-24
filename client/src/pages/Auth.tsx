@@ -56,7 +56,7 @@ export default function Auth() {
           </span>
           <button
             onClick={() => setLange()}
-            className="absolute top-1 right-1 p-4 hover:bg-gray-700 rounded-full"
+            className="absolute top-1 right-1 sm:p-4 p-2 hover:bg-gray-700 rounded-full"
           >
             <img
               src="https://img.icons8.com/?size=100&id=12455&format=png&color=ffffff"

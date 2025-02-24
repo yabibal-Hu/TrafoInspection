@@ -3,7 +3,7 @@ const conn = require("../Config/db.config");
 async function createUser(user) {
  const connection = await conn.pool.getConnection();
  const sql =
-    "INSERT INTO Users (username, password_hashed, role) VALUES (?, ?, ?)";
+    "INSERT INTO users (username, password_hashed, role) VALUES (?, ?, ?)";
 
   try {
     const [result] = await connection.execute(sql, [

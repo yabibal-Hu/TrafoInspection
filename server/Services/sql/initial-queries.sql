@@ -39,5 +39,5 @@ CREATE TABLE IF NOT EXISTS `TransformerInspections` (
     `added_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (transformer_name) REFERENCES Transformers(transformer_name),
-    FOREIGN KEY (username) REFERENCES Users(username)
+    FOREIGN KEY (username) REFERENCES users(username)
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
