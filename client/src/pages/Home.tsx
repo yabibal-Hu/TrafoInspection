@@ -4,20 +4,34 @@ import axios from "axios";
 import AddTransformerModal from "../components/AddTransformerModal";
 import InspectionModal from "../components/InspectionModal";
 import TransformerList from "../components/TransformerItem";
-// import TransformerList from "./TransformerList";
-// import AddTransformerModal from "./AddTransformerModal";
-// import InspectionModal from "./InspectionModal";
+import { useTranslation } from "react-i18next";
 
 const apiUrl = import.meta.env.VITE_API_URL;
+const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL;
 const Home: React.FC = () => {
+  const [weather, setWeather] = useState("");
+    const [temperature, setTemperature] = useState("");
   const [transformers, setTransformers] = useState<any[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isInspectModalOpen, setIsInspectModalOpen] = useState(false);
   const [selectedTransformer, setSelectedTransformer] = useState<any | null>(
     null
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
+    const getWeatherData = async () => {
+      try {
+        const response = await axios.get(`${WEATHER_API_URL}`);
+        if (response.status === 200) {
+          setWeather(response.data.weather[0].main);
+          setTemperature((response.data.main.temp - 273.15).toFixed(2));
+        }
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+    getWeatherData();
     fetchTransformers();
   }, []);
 
@@ -37,13 +51,13 @@ const Home: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6 bg-white">
-      <h1 className="text-2xl font-bold mb-4">Transformer Management</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">{t("home.title")}</h1>
       <TransformerList transformers={transformers} onInspect={handleInspect} />
       <button
         onClick={() => setIsAddModalOpen(true)}
         className="bg-[#405470] hover:bg-[#1F2937] text-white font-bold py-2 px-4 rounded ml-auto mt-4"
       >
-        Add Transformer
+        {t("home.add")}
       </button>
       <AddTransformerModal
         isOpen={isAddModalOpen}
@@ -57,6 +71,8 @@ const Home: React.FC = () => {
         transformer={selectedTransformer}
         onInspected={fetchTransformers}
         apiUrl={apiUrl}
+        temperature={temperature}
+        weather={weather}
       />
     </div>
   );

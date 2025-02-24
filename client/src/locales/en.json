@@ -1,0 +1,55 @@
+{
+  "login": {
+    "title": "Sign in to your account",
+    "username": "Username",
+    "password": "Password",
+    "button": "Sign in"
+  },
+  "header": {
+    "title": "Transformer Inspection",
+    "description": "easily register inspection data and get report",
+    "report": "Report",
+    "logout": "Logout"
+  },
+  "footer": {
+    "by": "Prepared by yabibal"
+  },
+  "home": {
+    "title": "List of Transformers",
+    "add": "Add Transformer"
+  },
+  "inspection": {
+    "transformer": "Transformer",
+    "weather": "Weather",
+    "temp": "Temp",
+    "inspectionDate": "Inspection Date",
+    "transformerTemp": "Transformer Temp",
+    "LYT": "Left LV Yellow Line Temp",
+    "LGT": "Left LV Green Line Temp",
+    "LRT": "Left LV Red Line Temp",
+    "LBT": "Left LV Blue Line Temp",
+    "RYT": "Right LV Yellow Line Temp",
+    "RGT": "Right LV Green Line Temp",
+    "RRT": "Right LV Red Line Temp",
+    "RBT": "Right LV Blue Line Temp",
+    "LTUB": "Line Temp Under the Base",
+    "remark": "Remark",
+    "cancel": "Cancel",
+    "submit": "Submit"
+  },
+  "transformer": {
+    "LastInspection": "Last Inspection",
+    "add": "Add Transformer",
+    "save": "Save"
+  },
+  "report": {
+    "title": "Report Page",
+    "selectTrafo": "Select Transformer",
+    "selectDate": "Select Date",
+    "all": "All Transformers",
+    "date": "Date",
+    "hour": "Hour",
+    "trafoID": "Transformer ID",
+    "noData": "No inspections found."
+  }
+}

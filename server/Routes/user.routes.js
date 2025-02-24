@@ -5,7 +5,7 @@ const userController = require("../Controllers/user.controller");
 // Route for creating a user
 router.post("/api/user", userController.createUser);
 // Route for get user by username
-router.get("/api/user/:username", userController.getUserByUsername);
+router.post("/api/user/:username", userController.getUserByUsername);
 // Route for login user
 router.post("/api/login", userController.loginUser);
 

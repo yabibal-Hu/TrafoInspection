@@ -1,0 +1,55 @@
+{
+  "login": {
+    "title": "登录您的帐户",
+    "username": "用户名",
+    "password": "密码",
+    "button": "登入"
+  },
+  "header": {
+    "title": "变压器巡检",
+    "description": "轻松登记检测数据并获取报告",
+    "report": "报告",
+    "logout": "退出"
+  },
+  "footer": {
+    "by": "Prepared by yabibal"
+  },
+  "home": {
+    "title": "变压器列表",
+    "add": "添加变压器"
+  },
+  "inspection": {
+    "transformer": "变压器",
+    "weather": "天气",
+    "temp": "温度",
+    "inspectionDate": "检查日期",
+    "transformerTemp": "变压器温度",
+    "LYT": "左低压黄线温度",
+    "LGT": "左低压绿线温度",
+    "LRT": "左低压红线温度",
+    "LBT": "左低压蓝线温度",
+    "RYT": "右低压黄线温度",
+    "RGT": "右低压绿线温度",
+    "RRT": "右低压红线温度",
+    "RBT": "右低压蓝色线路温度",
+    "LTUB": "基座下方电缆温度",
+    "remark": "评论",
+    "cancel": "取消",
+    "submit": "提交"
+  },
+  "transformer": {
+    "LastInspection": "上次巡检时间",
+    "add": "添加变压器",
+    "save": "节省"
+  },
+  "report": {
+    "title": "报告页",
+    "selectTrafo": "选择变压器",
+    "selectDate": "选择日期",
+    "all": "所有变形金刚",
+    "date": "日期",
+    "hour": "小时",
+    "trafoID": "变压器ID",
+    "noData": "没有发现任何检查。"
+  }
+}

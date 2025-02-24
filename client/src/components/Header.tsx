@@ -1,8 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useUser } from "../contexts/UserContext";
+import { useTranslation } from "react-i18next";
+import { useState } from 'react';
 
 export default function Header() {
   const { logout } = useUser();
+  const [lang, setLang] = useState(false);
+   const { t, i18n } = useTranslation();
+
+   const setLange = () => {
+      setLang(!lang);
+      changeLanguage();
+    };
+
+    const changeLanguage = () => {
+      const selectedLang = lang ? "en" : "ch";
+      i18n.changeLanguage(selectedLang);
+      localStorage.setItem("language", selectedLang);
+    };
+
   return (
     <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 sticky w-full z-20 top-0">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl ">
@@ -13,7 +29,7 @@ export default function Header() {
             alt="Flowbite Logo"
           />
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            Transformer Inspection
+            {t("header.title")}
           </span>
         </Link>
         <div className="flex items-center lg:order-2 mx-auto">
@@ -21,27 +37,23 @@ export default function Header() {
             to="/report"
             className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
           >
-            Report
+            {t("header.report")}
           </Link>
-          <Link
-            to="#"
+          <button
+            onClick={() => setLange()}
             className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
           >
-            {/* <p className=" text-white bg-primary-700 hover:bg-primary-800  font-medium rounded-lg text-sm  dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                Language
-              </p> */}
-
             <img
               src="https://img.icons8.com/?size=100&id=12455&format=png&color=ffffff"
               alt=""
               className="w-8 h-8 ml-1"
             />
-          </Link>
+          </button>
           <button
             onClick={logout}
             className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
           >
-            Log out
+            {t("header.logout")}
           </button>
         </div>
         <div
@@ -49,7 +61,7 @@ export default function Header() {
           id="mobile-menu-2"
         >
           <p className="mr-6 text-sm font-medium text-gray-500 dark:text-gray-400">
-            easily register inspection value and get report
+            {t("header.description")}
           </p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 interface AddTransformerModalProps {
@@ -15,6 +16,7 @@ const AddTransformerModal: React.FC<AddTransformerModalProps> = ({
   apiUrl,
 }) => {
   const [transformerName, setTransformerName] = useState("");
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,14 +41,14 @@ const AddTransformerModal: React.FC<AddTransformerModalProps> = ({
         onClick={onClose}
       ></div>
       <div className="bg-white rounded-lg p-6 relative z-10">
-        <h2 className="text-lg font-semibold mb-4">Add Transformer</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("transformer.add")}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="transformer_name"
               className="block text-sm font-medium text-gray-700"
             >
-              Transformer ID
+              {t("report.trafoID")}
             </label>
             <input
               type="text"
@@ -64,13 +66,13 @@ const AddTransformerModal: React.FC<AddTransformerModalProps> = ({
               onClick={onClose}
               className="bg-[#b14848] hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >
-              Cancel
+              {t("inspection.cancel")}
             </button>
             <button
               type="submit"
               className="bg-[#254579] hover:bg-[#1F2937] text-white font-bold py-2 px-4 rounded"
             >
-              Save
+              {t("transformer.save")}
             </button>
           </div>
         </form>

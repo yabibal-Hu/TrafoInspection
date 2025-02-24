@@ -45,10 +45,30 @@ async function getInspectionsByInspectionDate(inspectionDate) {
   }
 }
 
+// Update Last Inspection Date Service
+async function updateLastInspectionDate(transformerId, last_inspection_date) {
+  const connection = await conn.pool.getConnection();
+  const sql =
+    "UPDATE Transformers SET last_inspection_date = ? WHERE transformer_id = ?";
+
+  try {
+    const [result] = await connection.execute(sql, [
+      last_inspection_date,
+      transformerId,
+    ]);
+    return {
+      status: 200,
+      message: "Last inspection date updated successfully",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 module.exports = {
   createTransformer,
   getAllTransformers,
-
+  updateLastInspectionDate,
 };
 

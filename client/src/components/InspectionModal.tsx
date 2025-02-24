@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
+import { useUser } from "../contexts/UserContext";
+import {inspection} from "../pages/types"
 
-const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL;
+
 
 interface InspectionModalProps {
   isOpen: boolean;
@@ -9,7 +12,10 @@ interface InspectionModalProps {
   transformer: any;
   onInspected: () => void;
   apiUrl: string;
+  temperature: string;
+  weather: string
 }
+
 
 const InspectionModal: React.FC<InspectionModalProps> = ({
   isOpen,
@@ -17,55 +23,54 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
   transformer,
   onInspected,
   apiUrl,
+  temperature,
+  weather
 }) => {
-//  const WEATHER_API_URL="https://api.openweathermap.org/data/2.5/weather?lat=8.5875&lon=39.3092&appid=51743fb050a75b5aac2a83eeb0dc0ad2"
-  const username = "yabu";
-  const [formdata, setFormData] = useState({});
-  const [weather , setWeather] = useState("");
-  const [temperature , setTemperature] = useState("");
+const [formdata, setFormData] = useState<inspection>({});
+ 
+  const { t } = useTranslation();
+  const {username} = useUser();
 
-  console.log("weather", weather, temperature);
-  
-  // Call getWeatherData on component mount
-  useEffect(() => {
-   const getWeatherData = async () => {
-     try {
-       const response = await axios.get(`${WEATHER_API_URL}`);
-       if (response.status === 200) {
-         setWeather(response.data.weather[0].main);
-         // convert to celsius and set to state
-         setTemperature((response.data.main.temp - 273.15).toFixed(2));
-       }
-     } catch (error) {
-       console.error("Error fetching weather data:", error);
-     }
-   };
-   getWeatherData();
-   
-  }, []);
- const handleSubmit = async (e: React.FormEvent) => {
-   e.preventDefault();
-   
+ 
 
-   const payload = {
-     ...formdata,
-     transformer_name: transformer.transformer_name, // Assuming transformer has an 'id' field
-     username: username,
-     comments: (formdata as any).comments || null,
-     weather: weather,
-     temperature: temperature
-   };
-   console.log("payload", payload);
-   try {
-     await axios.post(`${apiUrl}/api/inspection`, payload);
-     onInspected(); // Notify parent component about successful inspection
-     setFormData({});
-     onClose(); // Close the modal
-   } catch (error) {
-     console.error("Error submitting inspection:", error);
-   }
- };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    const payload = {
+      ...formdata, 
+      transformer_name: transformer.transformer_name, 
+      username: username, 
+      comments: formdata.comments || null,
+      weather: weather, 
+      temperature: temperature, 
+    };
+
+    console.log("payload", payload); // Log the payload for debugging
+
+    try {
+      // Send the inspection data via POST request
+      await axios.post(
+        `${apiUrl}/api/inspection`,
+        payload
+      );
+
+      await axios.put(
+        `${apiUrl}/api/transformer/${transformer.transformer_id}`,
+        {
+          last_inspection_date: formdata.inspection_date, 
+        }
+      );
+
+      onInspected();
+      setFormData({});
+      onClose();
+    } catch (error) {
+      console.error("Error submitting inspection:", error);
+      alert(
+        "There was an error submitting the inspection. Please try again later."
+      );
+    }
+  };
 
   if (!isOpen || !transformer) return null;
 
@@ -77,12 +82,18 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
       ></div>
       <div className="bg-white rounded-lg p-6 relative z-10 w-11/12 max-w-lg  ">
         <h2 className="text-lg text-center font-semibold mb-4 rounded bg-gray-200">
+          {t("inspection.transformer")}
+          {"  "}
           {transformer.transformer_name}
           <br />
           <span className="text-sm text-gray-500 flex justify-between mx-4">
-
-          <span >Weather: {weather}</span>
-          <span > Temp: {temperature}&deg;C</span>
+            <span>
+              {t("inspection.weather")}: {weather}
+            </span>
+            <span>
+              {" "}
+              {t("inspection.temp")}: {temperature}&deg;C
+            </span>
           </span>
         </h2>
 
@@ -94,7 +105,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="inspection_date"
                 className="block text-sm font-medium text-gray-700"
               >
-                Inspection Date
+                {t("inspection.inspectionDate")}
               </label>
               <input
                 type="datetime-local"
@@ -105,7 +116,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 onChange={(e) =>
                   setFormData({
                     ...formdata,
-                    inspection_date: e.target.value,
+                    inspection_date: e.target.value, // This will handle the 24-hour format correctly
                   })
                 }
                 className="mt-1 p-2 border border-gray-300 rounded-md w-full"
@@ -118,7 +129,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="transformer_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Transformer Temperature
+                {t("inspection.transformerTemp")}
               </label>
               <input
                 type="text"
@@ -138,7 +149,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="left_yellow_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Left LV Yellow Line Temperature
+                {t("inspection.LYT")}
               </label>
               <input
                 type="text"
@@ -161,7 +172,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="left_green_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Left LV Green Line Temperature
+                {t("inspection.LGT")}
               </label>
               <input
                 type="text"
@@ -184,7 +195,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="left_red_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Left LV Red Line Temperature
+                {t("inspection.LRT")}
               </label>
               <input
                 type="text"
@@ -207,7 +218,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="left_blue_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Left LV Blue Line Temperature
+                {t("inspection.LBT")}
               </label>
               <input
                 type="text"
@@ -230,7 +241,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="right_yellow_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Right LV Yellow Line Temperature
+                {t("inspection.RYT")}
               </label>
               <input
                 type="text"
@@ -253,7 +264,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="right_green_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Right LV Green Line Temperature
+                {t("inspection.RGT")}
               </label>
               <input
                 type="text"
@@ -276,7 +287,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="right_red_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Right LV Red Line Temperature
+                {t("inspection.RRT")}
               </label>
               <input
                 type="text"
@@ -299,7 +310,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="right_blue_line_temp"
                 className="block text-sm font-medium text-gray-700"
               >
-                Right LV Blue Line Temperature
+                {t("inspection.RBT")}
               </label>
               <input
                 type="text"
@@ -322,7 +333,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="line_temp_under_the_base"
                 className="block text-sm font-medium text-gray-700"
               >
-                Line Temperature Under the Base
+                {t("inspection.LTUB")}
               </label>
               <input
                 type="text"
@@ -345,7 +356,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 htmlFor="comments"
                 className="block text-sm font-medium text-gray-700"
               >
-                Remarks
+                {t("inspection.remark")}
               </label>
               <textarea
                 id="comments"
@@ -367,13 +378,13 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
               onClick={onClose}
               className="bg-[#973e2e] hover:bg-[#973e2e] text-white font-bold py-2 px-4 rounded"
             >
-              Cancel
+              {t("inspection.cancel")}
             </button>
             <button
               type="submit"
               className="bg-[#376ab3] hover:bg-[#376ab3] text-white font-bold py-2 px-4 rounded"
             >
-              Submit
+              {t("inspection.submit")}
             </button>
           </div>
         </form>

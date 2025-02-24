@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { inspection, singleInspection } from "../pages/types";
 import axios from "axios";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+interface Transformer{
+  transformer_name: string
+}
+
 export default function ReportPage() {
-  const [inspectionData, setInspectionData] = useState([]);
-  const [transformers, setTransformers] = useState([]);
+  const [inspectionData, setInspectionData] = useState<inspection[]>([]);
+  const [transformers, setTransformers] = useState<Transformer[]>([]);
   const [transformerName, setTransformerName] = useState("all");
   const [inspectionDate, setInspectionDate] = useState("");
-  const [hours, setHours] = useState([]);
-  const [oneTimeData, setOneTimeData] = useState([]);
+  const [oneTimeData, setOneTimeData] = useState<singleInspection[]>([]);
   console.log("oneTimeData", oneTimeData);
   console.log("inspectionData", inspectionData);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchTransformers = async () => {
@@ -39,7 +45,7 @@ export default function ReportPage() {
 
         if (transformerName === "all") {
           const uniqueHoursData = response.data
-            .map((inspection) => {
+            .map((inspection: inspection) => {
               console.log("Inspection Data:", inspection); // 🔍 Check each object
 
               if (inspection.inspection_date) {
@@ -66,7 +72,7 @@ export default function ReportPage() {
 
           // Remove duplicates from the extracted data
           const filteredUniqueHoursData = uniqueHoursData.filter(
-            (item, index, self) =>
+            (item: singleInspection, index: number, self: singleInspection[]) =>
               index === self.findIndex((t) => t.hours === item.hours)
           );
 
@@ -83,22 +89,22 @@ export default function ReportPage() {
   }, [transformerName, inspectionDate]);
 
   // hour formater function from 2025-02-28T03:42:00.000Z to 03:42
-  const formattedDate = (dateString) => {
+  const formattedDate = (dateString: string) => {
     const date = new Date(dateString);
     const hours = date.getHours().toString().padStart(2, "0");
     const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
   };
 
-const handlePrint = (contentId) => {
-  // Create a new window for printing
-  const printWindow = window.open("", "", "height=600,width=800");
+  const handlePrint = (contentId: string) => {
+    // Create a new window for printing
+    const printWindow = window.open("", "", "height=600,width=800");
 
-  // Define the content to be printed (this could be the table or section you want)
-  const content = document.getElementById(contentId)?.innerHTML;
+    // Define the content to be printed (this could be the table or section you want)
+    const content = document.getElementById(contentId)?.innerHTML;
 
-  // Inject the content into the new window
-  printWindow?.document.write(`
+    // Inject the content into the new window
+    printWindow?.document.write(`
       <html>
         <head>
           <title>Print</title>
@@ -125,39 +131,49 @@ const handlePrint = (contentId) => {
       </html>
     `);
 
-  // Close the document to complete the content injection
-  printWindow?.document.close();
+    // Close the document to complete the content injection
+    printWindow?.document.close();
 
-  // Trigger the print dialog
-  printWindow?.print();
-};
+    // Trigger the print dialog
+    printWindow?.print();
+  };
   return (
     <div className="p-4 w-full mx-auto bg-white shadow-md rounded-lg">
-      <h1 className="text-xl font-semibold text-center mb-4">Report Page</h1>
+      <h1 className="text-xl font-semibold text-center mb-4">
+        {t("report.title")}
+      </h1>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <select
-          value={transformerName}
-          onChange={(e) => setTransformerName(e.target.value)}
-          className="p-2 border rounded-md sm:w-1/2"
-        >
-          <option value="all">All Transformers</option>
-          {transformers.map((transformer) => (
-            <option
-              key={transformer.transformer_name}
-              value={transformer.transformer_name}
-            >
-              {transformer.transformer_name}
-            </option>
-          ))}
-        </select>
+        <div className="sm:w-1/2">
+          <label className="font-semibold ml-4">
+            {t("report.selectTrafo")}
+          </label>
+          <select
+            value={transformerName}
+            onChange={(e) => setTransformerName(e.target.value)}
+            className="p-2 mt-1 border rounded-md w-full"
+          >
+            <option value="all">{t("report.all")}</option>
+            {transformers.map((transformer) => (
+              <option
+                key={transformer.transformer_name}
+                value={transformer.transformer_name}
+              >
+                {transformer.transformer_name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <input
-          type="date"
-          value={inspectionDate}
-          onChange={(e) => setInspectionDate(e.target.value)}
-          className="p-2 border rounded-md sm:w-1/2"
-        />
+        <div className="sm:w-1/2">
+          <label className="font-semibold ml-4">{t("report.selectDate")}</label>
+          <input
+            type="date"
+            value={inspectionDate}
+            onChange={(e) => setInspectionDate(e.target.value)}
+            className="p-2 mt-1 border rounded-md w-full"
+          />
+        </div>
       </div>
 
       <div className="mt-6">
@@ -165,7 +181,7 @@ const handlePrint = (contentId) => {
           <>
             {transformerName === "all" ? (
               <div>
-                {oneTimeData.map((data, index) => (
+                {oneTimeData.map((data) => (
                   <div
                     id={`content-to-print-${data.hours}`}
                     key={data.hours}
@@ -173,16 +189,16 @@ const handlePrint = (contentId) => {
                   >
                     <div className="flex justify-around align-center printflex">
                       <p className="font-bold text-gray-500">
-                        Date: {inspectionDate}
+                        {t("report.date")}: {inspectionDate}
                       </p>
                       <p className="font-bold text-gray-500">
-                        Hour: {data.hours}
+                        {t("report.hour")}: {data.hours}
                       </p>
                       <p className="font-bold text-gray-500">
-                        Weather: {data.weather}
+                        {t("inspection.weather")}: {data.weather}
                       </p>
                       <p className="font-bold text-gray-500">
-                        Temperature: {data.temperature}&deg;C
+                        {t("inspection.temp")}: {data.temperature}&deg;C
                       </p>
                       {/* print this maped table  */}
                       <button
@@ -201,41 +217,41 @@ const handlePrint = (contentId) => {
                     <table className="min-w-full divide-y divide-gray-200 border border-gray-300 mt-2">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Transformer ID
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("report.trafoID")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Transformer Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.transformerTemp")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Left LV Yellow Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.LYT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Left LV Green Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.LGT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Left LV Red Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.LRT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Left LV Blue Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.LBT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Right LV Yellow Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.RYT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Right LV Green Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.RGT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Right LV Red Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.RRT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Right LV Blue Line Temperature
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.RBT")}
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            Line Temperature Under the Base
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.LTUB")}
                           </th>
-                          <th className="px-6 py-3 min-w-[300px] text-left text-xs font-medium text-gray-500 uppercase">
-                            Remark
+                          <th className="px-6 py-3 min-w-[300px] text-left text-xs font-medium text-gray-500 ">
+                            {t("inspection.remark")}
                           </th>
                         </tr>
                       </thead>
@@ -295,13 +311,13 @@ const handlePrint = (contentId) => {
                 ))}
               </div>
             ) : (
-              <div className="overflow-x-auto mb-4" id="inspectionTable ">
+              <div className="overflow-x-auto mb-4" id="inspectionTable">
                 <div className="flex gap-8 justify-around align-center mx-8 printflex">
                   <p className="font-bold text-gray-500">
-                    Transformer Id: {transformerName}
+                    {t("report.trafoID")}: {transformerName}
                   </p>
                   <p className="font-bold text-gray-500">
-                    Date: {inspectionDate}
+                    {t("report.date")}: {inspectionDate}
                   </p>
                   <button
                     className="hidden sm:block"
@@ -317,46 +333,46 @@ const handlePrint = (contentId) => {
                 <table className="min-w-full divide-y divide-gray-200 border border-gray-300 mt-2">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Hours
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("report.hour")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Weather
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.weather")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.temp")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Transformer Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.transformerTemp")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Left LV Yellow Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.LYT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Left LV Green Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.LGT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Left LV Red Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.LRT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Left LV Blue Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.LBT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Right LV Yellow Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.RYT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Right LV Green Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.RGT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
                         Right LV Red Line Temperature
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Right LV Blue Line Temperature
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.RBT")}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Line Temperature Under the Base
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                        {t("inspection.LTUB")}
                       </th>
-                      <th className="px-6 py-3 text-left min-w-[300px] text-xs font-medium text-gray-500 uppercase">
+                      <th className="px-6 py-3 text-left min-w-[300px] text-xs font-medium text-gray-500 ">
                         Remark
                       </th>
                     </tr>
@@ -365,7 +381,7 @@ const handlePrint = (contentId) => {
                     {inspectionData.map((inspection) => (
                       <tr key={inspection.transformer_name}>
                         <td className="px-6 py-4">
-                          {formattedDate(inspection.inspection_date)}
+                          {formattedDate(inspection.inspection_date??"")}
                         </td>
                         <td className="px-6 py-4">{inspection.weather}</td>
                         <td className="px-6 py-4">
@@ -412,7 +428,7 @@ const handlePrint = (contentId) => {
             )}
           </>
         ) : (
-          <p className="text-gray-500 text-center">No inspections found.</p>
+          <p className="text-gray-500 text-center">{t("report.noData")}.</p>
         )}
       </div>
     </div>

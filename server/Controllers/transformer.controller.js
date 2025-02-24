@@ -20,4 +20,24 @@ async function getAllTransformers(req, res) {
   }
 }
 
-module.exports = { createTransformer, getAllTransformers };
+async function updateLastInspectionDate(req, res) {
+  try {
+    const transformerId = req.params.transformer_id;
+    const last_inspection_date = req.body.last_inspection_date;
+    const transformer = await transformerService.updateLastInspectionDate(
+      transformerId,
+      last_inspection_date
+    );
+    return res
+      .status(transformer.status)
+      .json({ message: transformer.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = {
+  createTransformer,
+  getAllTransformers,
+  updateLastInspectionDate,
+};
