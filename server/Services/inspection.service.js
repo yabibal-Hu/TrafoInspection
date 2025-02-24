@@ -26,14 +26,16 @@ async function createInspection(inspection) {
       inspection.right_red_line_temp,
       inspection.right_blue_line_temp,
       inspection.line_temp_under_the_base,
-      inspection.comments ,
+      inspection.comments,
       inspection.inspection_date,
       inspection.weather,
-      inspection.temperature
+      inspection.temperature,
     ]);
     return { status: 201, message: "Inspection record created successfully" };
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
@@ -47,6 +49,8 @@ async function getAllInspections() {
     return rows;
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
@@ -57,10 +61,15 @@ async function getInspectionsByTransformerName(transformerName, inspectionDate) 
     "SELECT * FROM TransformerInspections WHERE transformer_name = ? AND DATE(inspection_date) = ?";
 
   try {
-    const [rows] = await connection.execute(sql, [transformerName, inspectionDate]);
+    const [rows] = await connection.execute(sql, [
+      transformerName,
+      inspectionDate,
+    ]);
     return rows;
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 

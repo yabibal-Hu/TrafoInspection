@@ -17,6 +17,8 @@ async function createUser(user) {
       return { status: 400, message: "Username already exists" };
     }
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
@@ -30,6 +32,8 @@ async function getUserByUsername(username) {
     return { status: 200, message: rows };
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
@@ -39,10 +43,15 @@ async function loginUser(user) {
   const sql = "SELECT * FROM users WHERE username = ? AND password_hashed = ?";
 
   try {
-    const [rows] = await connection.execute(sql, [user.username, user.password_hashed]);
+    const [rows] = await connection.execute(sql, [
+      user.username,
+      user.password_hashed,
+    ]);
     return { status: 200, message: rows };
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 

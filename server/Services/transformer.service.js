@@ -15,21 +15,27 @@ async function createTransformer(transformer) {
       return { status: 400, message: "Transformer already exists" };
     }
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
 // Get All Transformers Service
 async function getAllTransformers() {
-  const connection = await conn.pool.getConnection();
+  const connection = await conn.pool.getConnection(); // Get connection from pool
   const sql = "SELECT * FROM Transformers";
 
   try {
     const [rows] = await connection.execute(sql);
     return rows;
   } catch (error) {
+    console.error("Error fetching transformers:", error);
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
+
 
 // Get Transformer Inspections By Inspection Date Service
 // in the db inspection_date is in the format 2025-02-28 23:33:00 but send from the params is 2025-02-28 so i want get all inspections by only the date not the time
@@ -42,7 +48,10 @@ async function getInspectionsByInspectionDate(inspectionDate) {
     return rows;
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
+  
 }
 
 // Update Last Inspection Date Service
@@ -62,6 +71,8 @@ async function updateLastInspectionDate(transformerId, last_inspection_date) {
     };
   } catch (error) {
     throw error;
+  } finally {
+    connection.release(); // Always release the connection
   }
 }
 
