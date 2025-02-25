@@ -7,7 +7,7 @@ router.post("/api/user", userController.createUser);
 // Route for get user by username
 router.post("/api/user/:username", userController.getUserByUsername);
 // Route for login user
-router.post("/api/login", userController.loginUser);
+router.get("/api/user/login", userController.loginUser);
 
 // Export the router
 module.exports = router;

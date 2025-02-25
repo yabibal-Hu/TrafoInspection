@@ -12,7 +12,6 @@ const App: React.FC = () => {
   {/* hide header and footer for auth */}
   const isAuthPage = window.location.pathname === "/login";
   const { username } = useUser();
-
   if (!username) {
     return <Auth />;
   }
@@ -24,7 +23,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/report" element={<ReportPage />} />
-        <Route path="/login" element={<Auth />} />
+        {/* <Route path="/login" element={<Auth />} /> */}
       </Routes>
       {!isAuthPage && <Footer />}
     </>

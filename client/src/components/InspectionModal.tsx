@@ -31,8 +31,6 @@ const [formdata, setFormData] = useState<inspection>({});
   const { t } = useTranslation();
   const {username} = useUser();
 
- 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
