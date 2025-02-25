@@ -44,19 +44,13 @@ export default function ReportPage() {
         if (transformerName === "all") {
           const uniqueHoursData = response.data
             .map((inspection: inspection) => {
-
               if (inspection.inspection_date) {
-                const dateObj = new Date(inspection.inspection_date);
-                const hours = dateObj.getHours().toString().padStart(2, "0"); // Ensure 2-digit format
-                const minutes = dateObj
-                  .getMinutes()
-                  .toString()
-                  .padStart(2, "0");
+                const formattedTime = formattedDate(inspection.inspection_date);
                 const weather = inspection.weather;
                 const temperature = inspection.temperature;
 
                 return {
-                  hours: `${hours}:${minutes}`, // "HH:MM"
+                  hours: formattedTime, // Now using formattedDate function
                   weather,
                   temperature,
                 };
@@ -83,12 +77,13 @@ export default function ReportPage() {
     fetchInspections();
   }, [transformerName, inspectionDate]);
 
-  // hour formater function from 2025-02-28T03:42:00.000Z to 03:42
   const formattedDate = (dateString: string) => {
     const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   };
 
   const handlePrint = (contentId: string) => {
@@ -376,7 +371,7 @@ export default function ReportPage() {
                     {inspectionData.map((inspection) => (
                       <tr key={inspection.transformer_name}>
                         <td className="px-6 py-4">
-                          {formattedDate(inspection.inspection_date??"")}
+                          {formattedDate(inspection.inspection_date ?? "")}
                         </td>
                         <td className="px-6 py-4">{inspection.weather}</td>
                         <td className="px-6 py-4">
