@@ -41,34 +41,30 @@ export default function ReportPage() {
         const response = await axios.get(endpoint);
         setInspectionData(response.data);
 
-        if (transformerName === "all") {
-          const uniqueHoursData = response.data
-            .map((inspection: inspection) => {
-              if (inspection.inspection_date) {
-                const formattedTime = formattedDate(inspection.inspection_date);
-                const weather = inspection.weather;
-                const temperature = inspection.temperature;
+       if (transformerName === "all") {
+         const uniqueHoursData = response.data
+           .map((inspection: inspection) => {
+             if (inspection.inspection_date) {
+               return {
+                 hours: formattedDate(inspection.inspection_date), // Use formattedDate function
+                 weather: inspection.weather,
+                 temperature: inspection.temperature,
+               };
+             }
+             return null;
+           })
+           .filter(Boolean); // Remove null values
 
-                return {
-                  hours: formattedTime, // Now using formattedDate function
-                  weather,
-                  temperature,
-                };
-              }
-              return null;
-            })
-            .filter(Boolean); // Remove null values
+         // Remove duplicates from the extracted data
+         const filteredUniqueHoursData = uniqueHoursData.filter(
+           (item: singleInspection, index: number, self: singleInspection[]) =>
+             index === self.findIndex((t) => t.hours === item.hours)
+         );
 
-          // Remove duplicates from the extracted data
-          const filteredUniqueHoursData = uniqueHoursData.filter(
-            (item: singleInspection, index: number, self: singleInspection[]) =>
-              index === self.findIndex((t) => t.hours === item.hours)
-          );
-
-          setOneTimeData(filteredUniqueHoursData);
-        } else {
-          setOneTimeData([]);
-        }
+         setOneTimeData(filteredUniqueHoursData);
+       } else {
+         setOneTimeData([]);
+       }
       } catch (error) {
         console.error(error);
       }

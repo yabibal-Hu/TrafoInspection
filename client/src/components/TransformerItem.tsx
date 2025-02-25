@@ -17,12 +17,12 @@ const TransformerList: React.FC<TransformerItemProps> = ({
   //   date ? new Date(date).toLocaleString() : "No inspection date";
 
   // Function to format date with 24hour
-  const formattedDate = (date: string) => {
-    const dateObj = new Date(date);
-    const hours = dateObj.getHours().toString().padStart(2, "0");
-    const minutes = dateObj.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
-  };
+   const formattedDate = (dateString: string) => {
+     const date = new Date(dateString);
+     const hours = date.getUTCHours().toString().padStart(2, "0");
+     const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+     return `${hours}:${minutes}`;
+   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
