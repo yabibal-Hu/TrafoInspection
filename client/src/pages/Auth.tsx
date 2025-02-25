@@ -7,7 +7,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export default function Auth() {
   const [localUsername, setLocalUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("mnhbbtnv");
+  const [error, setError] = useState(false);
   const { setUsername, setRole } = useUser();
   const [lang, setLang] = useState(true);
   const { t, i18n } = useTranslation();
@@ -39,7 +39,7 @@ export default function Auth() {
         // window.location.href = "/"; // Redirect to home
       }
     } catch (error) {
-      setError("Invalid username or password");
+      setError(true);
       console.error("Login failed:", error);
     }
   };
@@ -75,7 +75,7 @@ export default function Auth() {
         </h1>
         <form onSubmit={handleLogin} className="mt-6 space-y-4">
           <div>
-        <p className="text-red-500 text-center text-sm">{error}</p>
+        <p className="text-red-500 text-center text-sm">{error&&t("login.error")}</p>
             <label
               htmlFor="username"
               className="block mb-2 text-sm font-medium text-white"
@@ -89,7 +89,7 @@ export default function Auth() {
               value={localUsername}
               onChange={(e) => {
                 setLocalUsername(e.target.value);
-                setError("");
+                setError(false);
               }}
               className="w-full p-2.5 border rounded-lg bg-gray-700 border-gray-600 text-white"
               placeholder="John Doe"
@@ -110,7 +110,7 @@ export default function Auth() {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                setError("");
+                setError(false);
               }}
               placeholder="••••••••"
               className="w-full p-2.5 border rounded-lg bg-gray-700 border-gray-600 text-white"

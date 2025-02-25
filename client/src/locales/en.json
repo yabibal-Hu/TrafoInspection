@@ -3,7 +3,8 @@
     "title": "Sign in to your account",
     "username": "Username",
     "password": "Password",
-    "button": "Sign in"
+    "button": "Sign in",
+    "error": "Invalid username or password"
   },
   "header": {
     "title": "Transformer Inspection",

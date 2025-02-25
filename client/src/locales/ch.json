@@ -3,7 +3,8 @@
     "title": "登录您的帐户",
     "username": "用户名",
     "password": "密码",
-    "button": "登入"
+    "button": "登入",
+    "error": "用户名或密码无效"
   },
   "header": {
     "title": "变压器巡检",
