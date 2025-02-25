@@ -74,6 +74,10 @@ const [formdata, setFormData] = useState<inspection>({});
       <div
         className="absolute inset-0 bg-gray-500 opacity-50"
         onClick={onClose}
+        // onClick={() => {
+        //   onClose();
+        //   setFormData({});
+        // }}
       ></div>
       <div className="bg-white rounded-lg p-6 relative z-10 w-11/12 max-w-lg  ">
         <h2 className="text-lg text-center font-semibold mb-4 rounded bg-gray-200">
@@ -371,6 +375,10 @@ const [formdata, setFormData] = useState<inspection>({});
             <button
               type="button"
               onClick={onClose}
+              // onClick={() => {
+              //   onClose();
+              //   setFormData({});
+              // }}
               className="bg-[#973e2e] hover:bg-[#973e2e] text-white font-bold py-2 px-4 rounded"
             >
               {t("inspection.cancel")}
