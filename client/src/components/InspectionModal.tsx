@@ -107,7 +107,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 id="inspection_date"
                 name="inspection_date"
                 value={formdata.inspection_date}
-                min={new Date().toISOString().slice(0, 16)}
+                // min={new Date().toISOString().slice(0, 16)}
                 onChange={(e) =>
                   setFormData({
                     ...formdata,
