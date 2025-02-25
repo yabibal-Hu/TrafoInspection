@@ -60,7 +60,7 @@ export default function Header() {
           className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
           id="mobile-menu-2"
         >
-          <p className="mr-6 text-sm font-medium text-gray-400">
+          <p className="mr-6 text-sm font-medium text-gray-200">
             {t("header.description")}
           </p>
         </div>
