@@ -77,14 +77,13 @@ export default function ReportPage() {
     fetchInspections();
   }, [transformerName, inspectionDate]);
 
-  const formattedDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-  };
+ const formattedDate = (dateString: string) => {
+   const date = new Date(dateString);
+   const hours = date.getUTCHours().toString().padStart(2, "0");
+   const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+   return `${hours}:${minutes}`;
+ };
+
 
   const handlePrint = (contentId: string) => {
     // Create a new window for printing
