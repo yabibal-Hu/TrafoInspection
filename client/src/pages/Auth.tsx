@@ -42,8 +42,8 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-700">
-      <div className="w-full max-w-md p-6 m-6 bg-white rounded-lg shadow-md dark:bg-gray-800 relative">
+    <div className="flex items-center justify-center min-h-screen bg-gray-700">
+      <div className="w-full max-w-md p-6 m-6 rounded-lg shadow-md bg-gray-800 relative">
         {/* Logo Section */}
         <div className="flex flex-row items-center gap-2 justify-center mb-6">
           <img
@@ -51,7 +51,7 @@ export default function Auth() {
             alt="transformer logo"
             className="h-10 mb-2"
           />
-          <span className="text-xl font-semibold text-gray-900 dark:text-white">
+          <span className="text-xl font-semibold text-white">
             {t("header.title")}
           </span>
           <button
@@ -67,14 +67,14 @@ export default function Auth() {
         </div>
 
         {/* Sign-In Form */}
-        <h1 className="text-xl font-bold text-gray-900 md:text-2xl dark:text-white text-center">
+        <h1 className="text-xl font-bold md:text-2xl text-white text-center">
           {t("login.title")}
         </h1>
         <form onSubmit={handleLogin} className="mt-6 space-y-4">
           <div>
             <label
               htmlFor="username"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-white"
             >
               {t("login.username")}
             </label>
@@ -84,7 +84,7 @@ export default function Auth() {
               id="username"
               value={localUsername}
               onChange={(e) => setLocalUsername(e.target.value)}
-              className="w-full p-2.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full p-2.5 border rounded-lg bg-gray-700 border-gray-600 text-white"
               placeholder="John Doe"
               required
             />
@@ -92,7 +92,7 @@ export default function Auth() {
           <div>
             <label
               htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-white"
             >
               {t("login.password")}
             </label>
@@ -103,7 +103,7 @@ export default function Auth() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full p-2.5 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full p-2.5 border rounded-lg bg-gray-700 border-gray-600 text-white"
               required
             />
           </div>

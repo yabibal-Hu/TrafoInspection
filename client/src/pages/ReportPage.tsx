@@ -15,8 +15,6 @@ export default function ReportPage() {
   const [transformerName, setTransformerName] = useState("all");
   const [inspectionDate, setInspectionDate] = useState("");
   const [oneTimeData, setOneTimeData] = useState<singleInspection[]>([]);
-  console.log("oneTimeData", oneTimeData);
-  console.log("inspectionData", inspectionData);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -46,7 +44,6 @@ export default function ReportPage() {
         if (transformerName === "all") {
           const uniqueHoursData = response.data
             .map((inspection: inspection) => {
-              console.log("Inspection Data:", inspection); // 🔍 Check each object
 
               if (inspection.inspection_date) {
                 const dateObj = new Date(inspection.inspection_date);
@@ -57,8 +54,6 @@ export default function ReportPage() {
                   .padStart(2, "0");
                 const weather = inspection.weather;
                 const temperature = inspection.temperature;
-
-                console.log("Extracted Time:", `${hours}:${minutes}`); // 🔍 Check extracted time
 
                 return {
                   hours: `${hours}:${minutes}`, // "HH:MM"

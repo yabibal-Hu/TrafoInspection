@@ -45,10 +45,7 @@ const [formdata, setFormData] = useState<inspection>({});
       temperature: temperature, 
     };
 
-    console.log("payload", payload); // Log the payload for debugging
-
     try {
-      // Send the inspection data via POST request
       await axios.post(
         `${apiUrl}/api/inspection`,
         payload
