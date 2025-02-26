@@ -131,7 +131,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.transformerTemp")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="transformer_temp"
                 name="transformer_temp"
                 value={formdata.transformer_temp}
@@ -151,7 +151,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.LYT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="left_yellow_line_temp"
                 name="left_yellow_line_temp"
                 value={formdata.left_yellow_line_temp}
@@ -174,7 +174,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.LGT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="left_green_line_temp"
                 name="left_green_line_temp"
                 value={formdata.left_green_line_temp}
@@ -197,7 +197,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.LRT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="left_red_line_temp"
                 name="left_red_line_temp"
                 value={formdata.left_red_line_temp}
@@ -220,7 +220,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.LBT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="left_blue_line_temp"
                 name="left_blue_line_temp"
                 value={formdata.left_blue_line_temp}
@@ -243,7 +243,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.RYT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="right_yellow_line_temp"
                 name="right_yellow_line_temp"
                 value={formdata.right_yellow_line_temp}
@@ -266,7 +266,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.RGT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="right_green_line_temp"
                 name="right_green_line_temp"
                 value={formdata.right_green_line_temp}
@@ -289,7 +289,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.RRT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="right_red_line_temp"
                 name="right_red_line_temp"
                 value={formdata.right_red_line_temp}
@@ -312,7 +312,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.RBT")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="right_blue_line_temp"
                 name="right_blue_line_temp"
                 value={formdata.right_blue_line_temp}
@@ -335,7 +335,7 @@ const [formdata, setFormData] = useState<inspection>({});
                 {t("inspection.LTUB")}
               </label>
               <input
-                type="text"
+                type="number"
                 id="line_temp_under_the_base"
                 name="line_temp_under_the_base"
                 value={formdata.line_temp_under_the_base}
