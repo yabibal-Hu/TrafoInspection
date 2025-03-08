@@ -10,10 +10,12 @@ interface Transformer{
 }
 
 export default function ReportPage() {
+  // declear cureent date
+  const currentDate = new Date().toISOString().split("T")[0];
   const [inspectionData, setInspectionData] = useState<inspection[]>([]);
   const [transformers, setTransformers] = useState<Transformer[]>([]);
   const [transformerName, setTransformerName] = useState("all");
-  const [inspectionDate, setInspectionDate] = useState("");
+  const [inspectionDate, setInspectionDate] = useState(currentDate);
   const [oneTimeData, setOneTimeData] = useState<singleInspection[]>([]);
   const { t } = useTranslation();
 
@@ -55,7 +57,6 @@ export default function ReportPage() {
            })
            .filter(Boolean); // Remove null values
 
-         // Remove duplicates from the extracted data
          const filteredUniqueHoursData = uniqueHoursData.filter(
            (item: singleInspection, index: number, self: singleInspection[]) =>
              index === self.findIndex((t) => t.hours === item.hours)
@@ -81,47 +82,45 @@ export default function ReportPage() {
  };
 
 
-  const handlePrint = (contentId: string) => {
-    // Create a new window for printing
-    const printWindow = window.open("", "", "height=600,width=800");
+const handlePrint = (contentId: string) => {
+  // Create a new window for printing
+  const printWindow = window.open("", "", "height=600,width=800");
 
-    // Define the content to be printed (this could be the table or section you want)
-    const content = document.getElementById(contentId)?.innerHTML;
+  // Define the content to be printed (this could be the table or section you want)
+  const content = document.getElementById(contentId)?.innerHTML;
 
-    // Inject the content into the new window
-    printWindow?.document.write(`
-      <html>
-        <head>
-          <title>Print</title>
-          <style>
-            body { font-family: Arial, sans-serif; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 8px; text-align: left; }
-            h1 { text-align: center; font-size: 20px; }
-            .table-header { background-color: #f1f1f1; font-weight: bold; }
-            button{
-            display: none;
-            }
-            .printflex{
-              display: flex;
-              justify-content: space-around;
-              align-items: center;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>Inspection Report</h1>
-          <div>${content}</div>
-        </body>
-      </html>
-    `);
+  // Inject the content into the new window
+  printWindow?.document.write(`
+    <html>
+      <head>
+        <title>Print</title>
+        <style>
+          body { font-family: Arial, sans-serif; }
+          table { border-collapse: collapse; width: 100%; }
+          th, td { border: 1px solid black; padding: 1px; text-align: left; font-size: 6px; }
+          h1 { text-align: center; font-size: 12px; }
+          .table-header { background-color: #f1f1f1; font-weight: bold; }
+          button { display: none; }
+          .printflex { display: flex; justify-content: space-around; align-items: center; }
+          .page-break { page-break-after: always; }
+          @page { size: A4 landscape; margin: 0; }
+          .print-container { display: flex; flex-wrap: wrap; }
+          .print-container > div { width: 50%; }
+        </style>
+      </head>
+      <body>
+        <h1>Inspection Report</h1>
+        <div class="print-container">${content}</div>
+      </body>
+    </html>
+  `);
 
-    // Close the document to complete the content injection
-    printWindow?.document.close();
+  // Close the document to complete the content injection
+  printWindow?.document.close();
 
-    // Trigger the print dialog
-    printWindow?.print();
-  };
+  // Trigger the print dialog
+  printWindow?.print();
+};
   return (
     <div className="p-4 w-full mx-auto bg-white shadow-md rounded-lg">
       <h1 className="text-xl font-semibold text-center mb-4">
