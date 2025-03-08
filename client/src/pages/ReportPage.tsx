@@ -97,12 +97,13 @@ const handlePrint = (contentId: string) => {
         <style>
           body { font-family: Arial, sans-serif; }
           table { border-collapse: collapse; width: 100%; }
-          th, td { border: 1px solid black; padding: 1px; text-align: left; font-size: 6px; }
-          h1 { text-align: center; font-size: 12px; }
+          th, td { border: 1px solid black; padding: 0.3rem; text-align: left; font-size: 10px; }
+          h1 { text-align: center; font-size: 6px; }
           .table-header { background-color: #f1f1f1; font-weight: bold; }
           button { display: none; }
-          .printflex { display: flex; justify-content: space-around; align-items: center; }
+          .printflex { display: flex; justify-content: space-between; align-items: center; }
           .page-break { page-break-after: always; }
+          .printflex p { margin: 0; font-size: 12px; }
           @page { size: A4 landscape; margin: 0; }
           .print-container { display: flex; flex-wrap: wrap; }
           .print-container > div { width: 50%; }
