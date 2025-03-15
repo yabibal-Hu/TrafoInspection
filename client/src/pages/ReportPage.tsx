@@ -356,7 +356,7 @@ const handlePrint = (contentId: string) => {
                         {t("inspection.LTUB")}
                       </th>
                       <th className="px-6 py-3 text-left min-w-[300px] text-xs font-medium text-gray-500 ">
-                        {t("inspection.comments")}
+                        {t("inspection.remark")}
                       </th>
                     </tr>
                   </thead>
