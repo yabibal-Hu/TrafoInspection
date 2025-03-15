@@ -401,7 +401,7 @@ const handlePrint = (contentId: string) => {
                           {inspection.line_temp_under_the_base}
                         </td>
                         <td className="px-6 py-4 w-[300px]">
-                          {inspection.comments}
+                          {inspection.remark}
                         </td>
                       </tr>
                     ))}
