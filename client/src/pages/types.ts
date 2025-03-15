@@ -15,6 +15,7 @@ export interface inspection {
   right_red_line_temp?: string;
   right_blue_line_temp?: string;
   line_temp_under_the_base?: string;
+  remark?: string;
 }
 
 export interface singleInspection {
