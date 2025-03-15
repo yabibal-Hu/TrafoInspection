@@ -123,7 +123,7 @@ const handlePrint = (contentId: string) => {
   printWindow?.print();
 };
   return (
-    <div className="p-4 w-full mx-auto bg-white shadow-md rounded-lg">
+    <div className="p-4 w-full mx-auto mb-8 bg-white shadow-md rounded-lg">
       <h1 className="text-xl font-semibold text-center mb-4">
         {t("report.title")}
       </h1>
@@ -349,7 +349,7 @@ const handlePrint = (contentId: string) => {
                         {t("inspection.RGT")}
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
-                        Right LV Red Line Temperature
+                        {t("inspection.RRT")}
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
                         {t("inspection.RBT")}
@@ -358,7 +358,7 @@ const handlePrint = (contentId: string) => {
                         {t("inspection.LTUB")}
                       </th>
                       <th className="px-6 py-3 text-left min-w-[300px] text-xs font-medium text-gray-500 ">
-                        Remark
+                        {t("inspection.comments")}
                       </th>
                     </tr>
                   </thead>
