@@ -3,6 +3,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useUser } from "../contexts/UserContext";
 import {inspection} from "../pages/types"
+import { FaSpinner } from "react-icons/fa";
 
 
 
@@ -27,12 +28,14 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
   weather
 }) => {
 const [formdata, setFormData] = useState<inspection>({});
+const [loading, setLoading] = useState(false);
  
   const { t } = useTranslation();
   const {username} = useUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = {
       ...formdata, 
@@ -62,8 +65,10 @@ const [formdata, setFormData] = useState<inspection>({});
     } catch (error) {
       console.error("Error submitting inspection:", error);
       alert(
-        "There was an error submitting the inspection. Please try again later."
+        "unstable connection, please check your connection and try again"
       );
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -385,9 +390,14 @@ const [formdata, setFormData] = useState<inspection>({});
             </button>
             <button
               type="submit"
-              className="bg-[#376ab3] hover:bg-[#376ab3] text-white font-bold py-2 px-4 rounded"
+              disabled={loading}
+              className="bg-[#376ab3] hover:bg-[#376ab3] text-white font-bold py-2 px-4 rounded min-w-[90px]"
             >
-              {t("inspection.submit")}
+              {loading ? (
+                <FaSpinner className="animate-spin mx-auto" />
+              ) : (
+                t("inspection.submit")
+              )}
             </button>
           </div>
         </form>

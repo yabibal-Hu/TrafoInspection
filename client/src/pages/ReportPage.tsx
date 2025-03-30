@@ -123,7 +123,7 @@ const handlePrint = (contentId: string) => {
   printWindow?.print();
 };
   return (
-    <div className="p-4 w-full mx-auto mb-8 bg-white shadow-md rounded-lg">
+    <div className="p-4 w-full min-h-[90vh] mx-auto mb-8 bg-white shadow-md rounded-lg">
       <h1 className="text-xl font-semibold text-center mb-4">
         {t("report.title")}
       </h1>
@@ -135,7 +135,7 @@ const handlePrint = (contentId: string) => {
           </label>
           <select
             value={transformerName}
-            onChange={(e) => setTransformerName(e.target.value)}
+            onChange={(e) => {setInspectionData([]);setTransformerName(e.target.value)}}
             className="p-2 mt-1 border rounded-md w-full"
           >
             <option value="all">{t("report.all")}</option>
@@ -155,7 +155,7 @@ const handlePrint = (contentId: string) => {
           <input
             type="date"
             value={inspectionDate}
-            onChange={(e) => setInspectionDate(e.target.value)}
+            onChange={(e) => {setInspectionData([]);setInspectionDate(e.target.value);}}
             className="p-2 mt-1 border rounded-md w-full"
           />
         </div>
@@ -202,7 +202,7 @@ const handlePrint = (contentId: string) => {
                     <table className="min-w-full divide-y divide-gray-200 border border-gray-300 mt-2">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
+                          <th className="px-6 py-3 text-left min-w-[70px] text-xs font-medium text-gray-500 ">
                             {t("report.trafoID")}
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 ">
